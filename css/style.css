@@ -1,0 +1,99 @@
+body {
+
+	background-color: #2f4050;
+}
+.col-sm-10{
+
+	background-color: white;
+}
+
+
+/*--------------------------------------------------------------------------
+  Side Menu Style
+--------------------------------------------------------------------------*/
+
+#side_menu a{
+
+	color: #9fb1c2;
+
+}
+
+#side_menu .active a{
+
+	color: white;
+	background-color: red;
+	font-weight: bold;
+
+}
+#side_menu a:hover{
+
+	color: white;
+	background-color: #27aae1;
+	font-weight: bold;
+	display: block;
+
+}
+
+
+/*--------------------------------------------------------------------------
+  Table Style
+--------------------------------------------------------------------------*/
+.FieldInfo{
+
+ /* color:;*/
+ font-family: Bitter,Georgie,"Times New Roman",Times,serif;
+ font-size: 1.2em;
+}
+
+/*--------------------------------------------------------------------------
+  Navbar Style
+--------------------------------------------------------------------------*/
+.navbar-nav li{
+  font-weight: bold;
+  font-family: Bitter,Georgie,"Times New Roman",Times,serif;
+ font-size: 1.2em;
+}
+.line{
+  margin-top:-25px;
+}
+
+
+/*--------------------------------------------------------------------------
+  Footer Style
+--------------------------------------------------------------------------*/
+.footer {
+  background: #2f4050;
+  color: #dddddd;
+  padding: 0 20px 10px 20px;
+  border-top: 4px solid black;
+/*  margin-top: 20px;*/
+  -webkit-box-shadow: 0 -1px 12px rgba(0,0,0,0.4);
+  -moz-box-shadow: 0 -1px 12px rgba(0,0,0,0.4);
+  box-shadow: 0 -1px 12px rgba(0,0,0,0.4);
+  color: 0 -1px 12px rgba(0,0,0,0.4);
+  /*position:fixed;
+  margin-top:50px;*/
+  bottom:0;
+  width:100%;
+
+}
+.footer h3 {
+  color: #fefefe;
+  font-size: 1.3em;
+  border-bottom: 1px dotted #002200;
+}
+.footer ul {
+  padding: 0;
+}
+.footer-navigate-section li {
+  line-height: 20px !important;
+}
+.footer-copyright {
+  text-align: center;
+  color: #dddddd;
+  padding-top: 10px;
+  font-size: 0.9em;
+}
+
+
+
