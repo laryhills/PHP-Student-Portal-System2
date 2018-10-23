@@ -1,7 +1,7 @@
 <?php 
 session_start();
-require_once('db_connect.php');
-require_once('functions/functions.php');
+require_once('../db_connect.php');
+require_once('../functions/functions.php');
 ?>
 
 <?php
@@ -71,12 +71,12 @@ if (isset($_POST['addStudentBtn'])) {
 	<!-- Bootstrap 4 Changes -->
 <!--     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
 		<title>Add Students</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<script src="js/jquery-3.3.1.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="css/style.css">
-		<script src="js/solid.js" ></script>
-    	<script src="js/fontawesome.js"></script>
+		<link rel="stylesheet" href="../css/bootstrap.min.css">
+		<script src="../js/jquery-3.3.1.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="../css/style.css">
+		<script src="../js/solid.js" ></script>
+    <script src="../js/fontawesome.js"></script>
 
 
 	</head>
@@ -157,7 +157,7 @@ if (isset($_POST['addStudentBtn'])) {
                     </li>
                 </ul>
             </li>
-						<li><a href="#"><span class="glyphicon
+						<li><a href="../logout.php"><span class="glyphicon
 glyphicon-log-out"></span> Logout</a></li>
 
 					</ul>
@@ -199,7 +199,7 @@ glyphicon-log-out"></span> Logout</a></li>
 											<select class="form-control" name="student_dept" id="student_dept" required>				  
 	<?php 
 
-		 $option = "SELECT CONCAT(`dept_title`,' (',`fac_title`,')') AS DeptFac,`dept_code` FROM `department`";
+		 $option = "SELECT DISTINCT CONCAT(`dept_title`,' (',`fac_title`,')') AS DeptFac,`dept_code` FROM `department`";
 			        $optionresult= mysqli_query($db_connect, $option) or die(mysqli_error($db_connect));
 
 			            while ($row=mysqli_fetch_array($optionresult)) {
@@ -219,10 +219,10 @@ glyphicon-log-out"></span> Logout</a></li>
 											<label class="FieldInfo" for="student_level">Level:</label>
 							<select class="form-control" name="student_level" id="student_level"> 
 								<option value="100">100</option>
-								<option value="200">200</option>
+								<!-- <option value="200">200</option>
 								<option value="300">300</option>
 								<option value="400">400</option>
-								<option value="500">500</option>
+								<option value="500">500</option> -->
 											</select>
 										</div>
 									</div>
@@ -231,7 +231,7 @@ glyphicon-log-out"></span> Logout</a></li>
 											<select class="form-control" name="student_reg_no" id="student_reg_no" required>				  
 	<?php 
 
-		 $option = "SELECT fac_title,`fac_prefix` FROM `department`";
+		 $option = "SELECT DISTINCT fac_title,`fac_prefix` FROM `department`";
 			        $optionresult= mysqli_query($db_connect, $option) or die(mysqli_error($db_connect));
 
 			            while ($row=mysqli_fetch_array($optionresult)) {

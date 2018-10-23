@@ -1,9 +1,59 @@
 <?php 
 session_start();
-require_once('db_connect.php');
-require_once('functions/functions.php');
+require_once('../db_connect.php');
+require_once('../functions/functions.php');
 ?>
 
+<?php
+
+if (isset($_POST['addCourseBtn'])) {
+
+	$course_title=mysqli_real_escape_string($db_connect, ucwords($_POST['course_title']));
+	$course_code=mysqli_real_escape_string($db_connect, strtoupper($_POST['course_code'])); 
+	$course_credit=mysqli_real_escape_string($db_connect, $_POST['course_credit']); 
+	$course_dept=mysqli_real_escape_string($db_connect, $_POST['course_dept']); 
+
+	
+	// if(empty($course_name) || empty($course_code)){
+
+	// 	$_SESSION["ErrorMessage"]="All fields must be field";
+ 	//        header('location:addcourses.php');
+ 	//        exit;
+	// }
+	
+	if (strlen($course_code) <> 6) {
+
+		$_SESSION["ErrorMessage"]="Course Code Must be Six Characters";
+        header('location:courses.php');
+        exit;
+
+	}elseif(!(preg_match("/^[A-Z]{3}[0-9]{3}$/",$course_code))) {
+
+			$_SESSION["ErrorMessage"]="Course Code Wrong";
+        	header('location:courses.php');
+        	exit;
+	
+	}elseif ($course_credit < 2 || $course_credit > 6) {
+
+		$_SESSION["ErrorMessage"]="Course Credit Is Invalid";
+        header('location:courses.php');
+        exit;
+	}else{
+
+			$sql = "INSERT INTO courses (course_title,course_code,course_dept_fk,course_credit) VALUES ('$course_title','$course_code','$course_dept','$course_credit')";
+                $result = mysqli_query($db_connect, $sql) or die(mysqli_error($db_connect));
+
+            $_SESSION["SuccessMessage"]="Course Added!!!";
+            header('location:courses.php');
+            exit;
+		}
+	
+
+
+
+}
+
+?>
 
 <!DOCTYPE>
 
@@ -15,13 +65,13 @@ require_once('functions/functions.php');
 		 <meta name = "viewport" content="width=device-width, initial-scale=1">
 	<!-- Bootstrap 4 Changes -->
 <!--     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-		<title>Manage Students</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<script src="js/jquery-3.3.1.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="css/style.css">
-		<script src="js/solid.js" ></script>
-    	<script src="js/fontawesome.js"></script>
+		<title>Courses</title>
+		<link rel="stylesheet" href="../css/bootstrap.min.css">
+		<script src="../js/jquery-3.3.1.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="../css/style.css">
+		<script src="../js/solid.js" ></script>
+    <script src="../js/fontawesome.js"></script>
 
 
 	</head>
@@ -77,15 +127,15 @@ require_once('functions/functions.php');
 					<br><br>
 					<ul id="side_menu" class="nav nav-pills nav-stacked">
 						<li><a href="dashboard.php"><span class="glyphicon glyphicon-home"> </span> Dashboard</a></li>
-						<li><a href="courses.php"><span class="glyphicon glyphicon-book"> </span> Courses</a></li>
+						<li class="active"><a href="courses.php"><span class="glyphicon glyphicon-book"> </span> Courses</a></li>
 						<!-- <li><a href="#"><span class="glyphicon glyphicon-print"> </span> Print Result</a></li> -->
-						<li >
+						<li>
             <a href="#studentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="fa fa-user"></span> Students &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-caret-down"></i></a>
-				<ul  class="nav nav-pills nav-stacked" id="studentSubmenu">
+				<ul  class="collapse nav nav-pills nav-stacked" id="studentSubmenu">
                     <li>
                         <a href="addstudent.php"><span class="fa fa-user-plus"></span> Add Student</a>
                     </li>
-                    <li  class="active">
+                    <li>
                         <a href="students.php"><span class="fa fa-users"></span> Manage Students</a>
                     </li>
                 </ul>
@@ -102,13 +152,17 @@ require_once('functions/functions.php');
                     </li>
                 </ul>
             </li>
-						<li><a href="#"><span class="glyphicon
+						<li><a href="../logout.php"><span class="glyphicon
 glyphicon-log-out"></span> Logout</a></li>
+						<!-- <li><a href="courses.php">Courses</a></li>
+						<li><a href="result.php">Check Result</a></li>
+						<li><a href="payment.php">Payment</a></li>
+						<li><a href="logout.php">Logout</a></li> -->
 
 					</ul>
 				</div> <!-- Ending of Side Area -->
 				<div class="col-sm-10">
-					<h1>Admin Manage Students</h1>
+					<h1>Admin Manage Courses</h1>
 					
 						<div>
 							<!-- notification message -->
@@ -120,13 +174,64 @@ glyphicon-log-out"></span> Logout</a></li>
 									?>
 
 							
-							
+							<form method="post" action="courses.php">
+								<fieldset>
+									
+									<div class="form-row">
+										<div class="form-group col-sm-8">	
+											<label class="FieldInfo" for="course_title">Course Title:</label>
+							<input style="text-transform: capitalize;" class="form-control" type="text" name="course_title" id="course_title" placeholder="Course Title" required>
+										</div>
+										<div class="form-group col-sm-2">	
+											<label class="FieldInfo" for="course_code">Course Code:</label>
+							<input style="text-transform: uppercase;" class="form-control" type="text" name="course_code" id="course_code" placeholder="Course Code"maxlength="6"  required>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-sm-6">
+											<label class="FieldInfo" for="course_dept">Course Department/Faculty:</label>
+											<select class="form-control" name="course_dept" id="course_dept" required>				  
+	<?php 
+
+		 $option = "SELECT CONCAT(`dept_title`,'/',`fac_title`) AS DeptFac,`dept_code` FROM `department`";
+			        $optionresult= mysqli_query($db_connect, $option) or die(mysqli_error($db_connect));
+
+			            while ($row=mysqli_fetch_array($optionresult)) {
+			            	?>
+				       		<option value="<?php echo $row['dept_code']; ?>">
+				        	<?php echo $row['DeptFac'];?></option>
+				            
+				            <?php
+				             }
+				            ?>
+
+
+  												</select>
+
+										</div>
+										<div class="form-group col-sm-4">	
+											<label class="FieldInfo" for="course_credit">Course Credit Load:</label>
+							<input class="form-control" type="number" name="course_credit" id="course_credit" placeholder="Course Credit Load"maxlength="1"  required>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-10">
+											<input class="btn btn-success btn-block" type="submit" name="addCourseBtn" value="Add New Course">
+					
+										</div>
+	
+									</div>
+									
+
+								</fieldset>
+							</form>
+
 						</div>
 						<div class="table-responsive">
 
 	<?php 
 
-        $ViewQuery = "SELECT DISTINCT CONCAT(f_name,' ',m_name,' ',l_name) AS Name,level,dept_fk,comment,fac_code,student_reg_no FROM `students`,department WHERE `dept_fk` = dept_code AND user_type='student'";
+        $ViewQuery = "SELECT * FROM `courses`,department WHERE `course_dept_fk` = dept_code";
         $ViewQueryResult= mysqli_query($db_connect, $ViewQuery) or die(mysqli_error($db_connect));
         $serial=0;
     ?>
@@ -136,12 +241,11 @@ glyphicon-log-out"></span> Logout</a></li>
 				<thead>
                 	<tr>
                         <th>S/No</th>
-                        <th>Student Reg. No.</th>
-                        <th>Name</th>
-                        <th>Level</th>
-                        <th>Department</th>
-                        <th>Level</th>
-                        <th>Comment</th>
+                        <th>Course Code</th>
+                        <th>Course Title</th>
+                        <th>Dept.</th>
+                        <th>Faculty</th>
+                        <th>Credits</th>
                         <th colspan="2">Action</th>
                         <!-- <th>Action</th> -->
                     </tr>
@@ -152,29 +256,26 @@ glyphicon-log-out"></span> Logout</a></li>
             
 		                while ($row=mysqli_fetch_array($ViewQueryResult)) {
 
-		                    $stud_name = ($row['Name']);
-		                   	$stud_level = ($row['level']);
-		                    $stud_dept = ($row['dept_fk']);
-		                    $stud_fac = ($row['fac_code']);
-		                    $stud_comm = ($row['comment']);
-		                    $stud_reg=$row['student_reg_no'];
-
+		                    $course_code1 = ($row['course_code']);
+		                   	$course_title1 = ($row['course_title']);
+		                    $course_dept1 = ($row['course_dept_fk']);
+		                    $course_fac1 = ($row['fac_code']);
+		                    $course_credit1 = $row['course_credit'];
 		                    $serial++;
 		                    
                   	?>
               	<tr>
                     <td><?php echo $serial; ?></td>
-                    <td><?php echo $stud_reg; ?></td>
-                    <td><?php echo $stud_name; ?></td>
-                    <td><?php echo $stud_level; ?></td>
-                    <td><?php echo $stud_dept; ?></td>
-                    <td><?php echo $stud_fac; ?></td>
-                    <td><?php echo $stud_comm; ?></td>
+                    <td><?php echo $course_code1; ?></td>
+                    <td><?php echo $course_title1; ?></td>
+                    <td><?php echo $course_dept1; ?></td>
+                    <td><?php echo $course_fac1; ?></td>
+                    <td><?php echo $course_credit1; ?></td>
                     <td>
-                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-userid="<?php echo $row['student_reg_no']; ?>" >Edit</button>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-userid="<?php echo $row['course_id']; ?>" >Edit</button>
                   </td>
                   <td>
-                  <a href="del_student.php?del=<?php echo $row['student_reg_no']; ?>" class="del_btn"><button type="button" class="btn btn-danger">Delete</button></a>
+                  <a href="del_course.php?del=<?php echo $row['course_id']; ?>" class="del_btn"><button type="button" class="btn btn-danger">Delete</button></a>
 
                 </td>
 	               
@@ -198,8 +299,6 @@ glyphicon-log-out"></span> Logout</a></li>
 						<p>&nbsp;</p>
 						<p>&nbsp;</p>
 						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
 				</div> <!-- Ending of Main Area -->
 
 				<div class="container"><!--  For Modal -->
@@ -214,7 +313,7 @@ glyphicon-log-out"></span> Logout</a></li>
         <!-- Modal Header -->
         <div class="modal-header"  style="color: black;">
           <!-- <h4 class="modal-title" style="color: black;">Modal Heading</h4> -->
-          <h2 style="font-size: 25px;"><u>Update Student Record</u></h2><br> 
+          <h2 style="font-size: 25px;"><u>Update Course</u></h2><br> 
           <!--<button type="button" class="close" data-dismiss="modal">&times;</button> -->
         </div>
         
@@ -262,6 +361,16 @@ glyphicon-log-out"></span> Logout</a></li>
 
 	    <script type="text/javascript">
 
+	    
+	 //    //triggered when modal is about to be shown
+		// $('#myModal').on('show.bs.modal', function(e) {
+
+  //  		 //get data-id attribute of the clicked element
+  //   	var userid = $(e.relatedTarget).data('userid');
+
+  //   	//populate the textbox
+  //   	$(e.currentTarget).find('input[name="user_id"]').val(userid);
+		// });	
 
 
 		$(document).ready(function(){
@@ -269,7 +378,7 @@ glyphicon-log-out"></span> Logout</a></li>
         var rowid = $(e.relatedTarget).data('userid');
         $.ajax({
             type : 'post',
-            url : 'fetch_record_stud.php', //Here you will fetch records 
+            url : 'fetch_record.php', //Here you will fetch records 
             data :  'rowid='+ rowid, //Pass $id
             success : function(data){
             $('.fetched-data').html(data);//Show fetched data from database

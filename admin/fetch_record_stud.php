@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once('db_connect.php');
+require_once('../db_connect.php');
 
 
 
@@ -45,7 +45,7 @@ if($_POST['rowid']) {
 											<small id="passwordHelpBlock" class="form-text text-muted">
   								Old Password - <?php echo $stud_password; ?>
 							</small>
-							<input style="text-transform: capitalize;" class="form-control" type="password" name="student_password" id="student_password" placeholder="Student Password" value="<?php echo $stud_password; ?>">
+							<input style="text-transform: capitalize;" class="form-control" type="text" name="student_password" id="student_password" placeholder="Student Password" value="Password Will Be Reset On Update" readonly="0">
 										</div>
 									</div>
 									<div class="form-row">
@@ -120,15 +120,15 @@ $option2 = "SELECT CONCAT(`dept_title`,'/',`fac_title`) AS DeptFac,`dept_fk` FRO
 							<select class="form-control" name="student_level" id="student_level">
 
 								<option value="100">100</option>
-								<option value="200">200</option>
+								<!-- <option value="200">200</option>
 								<option value="300">300</option>
 								<option value="400">400</option>
-								<option value="500">500</option>
+								<option value="500">500</option> -->
 											</select>
 										</div>
 									</div>
 									<div class="form-row">
-										<div class="form-group col-md-10">
+										<div class="form-group col-md-12">
 											<input class="btn btn-success btn-block" type="submit" name="updateStudentBtn" value="Update Student Record">
 					
 										</div>

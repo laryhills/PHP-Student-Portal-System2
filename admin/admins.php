@@ -1,7 +1,7 @@
 <?php 
 session_start();
-require_once('db_connect.php');
-require_once('functions/functions.php');
+require_once('../db_connect.php');
+require_once('../functions/functions.php');
 ?>
 
 
@@ -16,12 +16,12 @@ require_once('functions/functions.php');
 	<!-- Bootstrap 4 Changes -->
 <!--     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
 		<title>Manage Students</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<script src="js/jquery-3.3.1.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="css/style.css">
-		<script src="js/solid.js" ></script>
-    	<script src="js/fontawesome.js"></script>
+		<link rel="stylesheet" href="../css/bootstrap.min.css">
+		<script src="../js/jquery-3.3.1.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="../css/style.css">
+		<script src="../js/solid.js" ></script>
+    <script src="../js/fontawesome.js"></script>
 
 
 	</head>
@@ -101,7 +101,7 @@ require_once('functions/functions.php');
                     </li>
                 </ul>
             </li>
-						<li><a href="#"><span class="glyphicon
+						<li><a href="../logout.php"><span class="glyphicon
 glyphicon-log-out"></span> Logout</a></li>
 
 					</ul>
@@ -173,7 +173,8 @@ glyphicon-log-out"></span> Logout</a></li>
                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" data-userid="<?php echo $row['student_reg_no']; ?>" >Edit</button>
                   </td> -->	
                   <td> 
-                  <a href="del_student.php?del=<?php echo $row['student_reg_no']; ?>" class="del_btn"><button type="button" class="btn btn-danger">Delete</button></a>
+                  <!-- <a href="del_student.php?del=<?php echo $row['student_reg_no']; ?>" class="del_btn"><button type="button" class="btn btn-danger">Delete</button></a> -->
+                  <a href="#" class="del_btn"><button type="button" class="btn btn-danger">Delete</button></a>
 
                 </td>
 	               

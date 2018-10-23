@@ -1,7 +1,8 @@
 <?php 
 session_start();
-require_once('db_connect.php');
-require_once('functions/functions.php');
+require_once('../db_connect.php');
+require_once('../functions/functions.php');
+require_once('../dateTime.php');
 ?>
 <!DOCTYPE>
 
@@ -13,12 +14,12 @@ require_once('functions/functions.php');
 	<!-- Bootstrap 4 Changes -->
 <!--     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
 		<title>Dashboard</title>
-		<link rel="stylesheet" href="css/bootstrap.min.css">
-		<script src="js/jquery-3.3.1.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
-		<link rel="stylesheet" href="css/style.css">
-		<script src="js/solid.js" ></script>
-    <script src="js/fontawesome.js"></script>
+				<link rel="stylesheet" href="../css/bootstrap.min.css">
+		<script src="../js/jquery-3.3.1.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="../css/style.css">
+		<script src="../js/solid.js" ></script>
+    <script src="../js/fontawesome.js"></script>
 
 
 	</head>
@@ -56,9 +57,11 @@ require_once('functions/functions.php');
 						<button class="btn btn-default">
         <i class="fa fa-search"></i></button>
 					</form> -->
-					 <!-- <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+			<!--		 <ul class="nav navbar-nav navbar-right">
+					 	<br>
+					 	<li style="color: white; align-content: center;"><?php echo $DateTime1; ?></li>
+         <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li> 
       </ul> -->
 				</div>
 				
@@ -99,9 +102,7 @@ require_once('functions/functions.php');
                     </li>
                 </ul>
             </li>
-						<li><a href="#"><span class="glyphicon glyphicon-credit-card"> </span> Payments</a></li>
-						<li><a href="#"><span class="glyphicon
-glyphicon-log-out"></span> Logout</a></li>
+						<li><a href="../logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 						<!-- <li><a href="courses.php">Courses</a></li>
 						<li><a href="result.php">Check Result</a></li>
 						<li><a href="payment.php">Payment</a></li>

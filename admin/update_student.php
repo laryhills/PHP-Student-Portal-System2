@@ -1,6 +1,6 @@
 <?php
-require_once('db_connect.php');
-require_once('functions/functions.php');
+require_once('../db_connect.php');
+require_once('../functions/functions.php');
 
 ?>
 
@@ -14,11 +14,11 @@ if (isset($_POST['updateStudentBtn'])) {
 	$stud_dept=mysqli_real_escape_string($db_connect, $_POST['student_dept']);
 	$stud_level=mysqli_real_escape_string($db_connect, ($_POST['student_level']));
 	$stud_reg=mysqli_real_escape_string($db_connect, ($_POST['student_reg_no']));
-	$stud_password= mysqli_real_escape_string($db_connect, ($_POST['student_password']));
+	$stud_password= randomPassword();
 
 
 	
-	$sql = "UPDATE students SET password='$stud_password', f_name='$stud_fname',m_name='$stud_mname',l_name='$stud_lname',dept_fk='$stud_dept',level='$stud_level' WHERE student_reg_no='$stud_reg'";
+	$sql = "UPDATE students SET password='$stud_password', f_name='$stud_fname',m_name='$stud_mname',l_name='$stud_lname',dept_fk='$stud_dept',level='$stud_level', comment='$stud_password' WHERE student_reg_no='$stud_reg'";
                 $result = mysqli_query($db_connect, $sql) or die(mysqli_error($db_connect));
 
             $_SESSION["SuccessMessage"]="Student Record Updated!!!";
