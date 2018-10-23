@@ -11,7 +11,7 @@ if (isset($_POST['addCourseBtn'])) {
 
 	$stud_course= $_POST['student_course'];
 
-	$CourseCheck = "SELECT * FROM student_courses WHERE course_fk ='$stud_course'";
+	$CourseCheck = "SELECT * FROM student_courses WHERE course_fk ='$stud_course' AND student_fk='$stud_reg_no'";
 	$CourseCheckResult = mysqli_query($db_connect, $CourseCheck) or die(mysqli_error($db_connect));
 	$rowcount1=mysqli_num_rows($CourseCheckResult);
 	if($rowcount1>0){
