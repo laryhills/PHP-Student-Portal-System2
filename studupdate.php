@@ -2,7 +2,6 @@
 session_start();
 require_once('db_connect.php');
 require_once('functions/functions.php');
-require_once('dateTime.php');
 ?>
 <!DOCTYPE>
 
@@ -116,33 +115,36 @@ glyphicon-log-out"></span> Logout</a></li>
     ?>			
     <?php
 
-  if (isset($_POST['updateStudentBtn'])){
+ //  if (isset($_POST['updateStudentBtn'])){
 
-		$stud_password1= mysqli_real_escape_string($db_connect, ($_POST['student_password1']));
-		$stud_password2= mysqli_real_escape_string($db_connect, ($_POST['student_password2']));
+	// 	$stud_password1= mysqli_real_escape_string($db_connect, ($_POST['student_password1']));
+	// 	$stud_password2= mysqli_real_escape_string($db_connect, ($_POST['student_password2']));
 
-		if (strlen($stud_password2) < 8) {
-			echo "<div class=\"alert alert-danger\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>New Password Must Be At Least 8 Characters</div>";
+	// 	if (strlen($stud_password2) < 8) {
+	// 		echo "<div class=\"alert alert-danger\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>New Password Must Be At Least 8 Characters</div>";
 			
-		}elseif (!($stud_pass == $stud_password1)) {
-			echo "<div class=\"alert alert-danger\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>Old Password Not Correct</div>";
-		}else{
+	// 	}elseif (!($stud_pass == $stud_password1)) {
+	// 		echo "<div class=\"alert alert-danger\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>Old Password Not Correct</div>";
+	// 	}else{
 			
-			if ($stud_password2 == $stud_pass) {
-				echo "<div class=\"alert alert-danger\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>Please Choose A Different Password</div>";
-			}else{
+	// 		if ($stud_password2 == $stud_pass) {
+	// 			echo "<div class=\"alert alert-danger\"><a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>Please Choose A Different Password</div>";
+	// 		}else{
 
-					$sql = "UPDATE students SET password='$stud_password2' WHERE student_reg_no='$stud_reg_no'";
-                $result = mysqli_query($db_connect, $sql) or die(mysqli_error($db_connect));
+	// 				$sql = "UPDATE students SET password='$stud_password2' WHERE student_reg_no='$stud_reg_no'";
+ //                $result = mysqli_query($db_connect, $sql) or die(mysqli_error($db_connect));
 
-            echo "<div class=\"alert alert-success\">Password Changed!!!</div>";
-			}
-		}
+ //            echo "<div class=\"alert alert-success\">Password Changed!!!</div>";
+	// 		}
+	// 	}
 
-	}
+	// }
 
 		?>	
-			<form method="post" action="studupdate.php">
+		<div class="alert alert-success" id="sMsg" style="display: none;"></div>
+		<div class="alert alert-danger" id="eMsg" style="display: none;"></div>
+			<!-- <form method="post" action="studupdate.php"> -->
+				<form  class="updateStudent" id="updateStudent">
                 <!-- <tbody style="font-size: 1.2em;"> -->
                 	<fieldset>
 									
@@ -157,13 +159,14 @@ glyphicon-log-out"></span> Logout</a></li>
 									<div class="form-row">
 											<div class="form-group col-sm-6">	
 											<label class="FieldInfo" for="student_password1">Old Password:</label>
-							<input class="form-control" type="password" name="student_password1" id="student_password1" placeholder="Old Password" required>
+							<input class="form-control" type="password" name="student_password1" id="student_password1" placeholder="Old Password"><div class="old-error error" ></div>
 										</div>
 										<div class="form-group col-sm-6">	
 											<label class="FieldInfo" for="student_password2">New Password:</label>
-							<input class="form-control" type="password" name="student_password2" id="student_password2" placeholder="New Password" required><small id="passwordHelpBlock" class="form-text text-muted">
-  								Password must be at least 8 characters long.
-							</small>
+							<input class="form-control" type="password" name="student_password2" id="student_password2" placeholder="New Password">
+							<div class="new-error error" ></div><div id="tip"><small id="passwordHelpBlock" class="form-text text-muted">
+  								Password must be at least 8 characters long, include at least one uppercase and one special character.
+							</small></div>
 										</div>
 									</div>
 									<div class="form-row">
@@ -207,9 +210,7 @@ glyphicon-log-out"></span> Logout</a></li>
 		    	</div>
 		    </div>
 	    </div> <!-- Ending of Footer -->
-
-
-
+		<script type="text/javascript" src="js/studupdate.js"></script>
 	</body>
 	<!--Bootstrap 4 changes-->
 	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

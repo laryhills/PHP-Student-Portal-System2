@@ -2,7 +2,6 @@
 session_start();
 require_once('db_connect.php');
 require_once('functions/functions.php');
-require_once('dateTime.php');
 	
 
 
@@ -31,6 +30,7 @@ if(!$_SESSION['username']){
 		<link rel="stylesheet" href="css/style.css">
 		<script src="js/solid.js" ></script>
     <script src="js/fontawesome.js"></script>
+    
 
 
 	</head>
@@ -125,17 +125,28 @@ glyphicon-log-out"></span> Logout</a></li>
 		                    $com=$row['comment'];
 
 		                }
+						echo "<div class=\"alert alert-success\" id=\"tue\"><i class=\"fa fa-check-circle\"></i> Welcome, ".$name."!!!</div>";
 
-		                if (strcmp($pwd,$com) == 0 ){
 
-		                // if (($row['password']) == ($row['comment'])) {
+							if (strcmp($pwd,$com) == 0 ){
 
-		                	// <a href=\"#\" class=\"close\" data-dismiss=\"alert\" aria-label=\"close\">&times;</a>
-		                	echo "<div class=\"alert alert-danger\">Please Change Your Password</div>";
+		                	echo "<div class=\"alert alert-danger\" id=\"mon\">Please Change Your Password</div>";
 		                }
-		                
-                  	?>
+		                 
+
+
+    					if (isset($_SESSION["SuccessMessage"])){
+
+    						echo "<div class=\"alert alert-success\" id=\"wed\">Password Updated!!!</div>";
+
+    					}
+
+
+		?>
+		      <!-- <div class="alert alert-danger" id="mon" style="display: none;">Please Change Your Password</div> -->
               	<tr>
+
+			<input type="hidden" value="<?php echo $stud_reg_no; ?>" id="stud_reg_no" name="stud_reg_no">
 
 			<tr><td >Name :</td><td><?php echo $name; ?></td></tr>
 			<tr><td>Student Reg No :</td><td><?php echo $stud_reg_no; ?></td></tr>
@@ -160,7 +171,46 @@ glyphicon-log-out"></span> Logout</a></li>
 						<p>&nbsp;</p>
 				</div> <!-- Ending of Main Area -->
 
+				<div class="container"><!--  For Modal -->
+  
+  
+
+  <!-- The Modal -->
+  <div class="modal fade bd-example-modal-lg" id="myModal" style="color: black;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header"  style="color: black;">
+          <!-- <h4 class="modal-title" style="color: black;">Modal Heading</h4> -->
+          <h2 style="font-size: 25px;"><div class="error">Please Change Your Password</div><br> 
+          <!--<button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+	      	
+
+ 			<div class="fetched-data"> <!-- show data to modal -->
+ 				
+ 			</div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        	<!-- <button type="submit" class="btn btn-primary" id="btnEdit"><span class="fa fa-edit"></span> Update</button> -->
+        	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+</div>
+
 				
+
+
+			</div> <!-- Ending of Modal -->
 
 
 			</div> <!-- Ending of Row -->
@@ -178,6 +228,60 @@ glyphicon-log-out"></span> Logout</a></li>
 		    	</div>
 		    </div>
 	    </div> <!-- Ending of Footer -->
+
+		<script>
+	    	//fading in update password message
+	   	$(function(){
+  			$('#mon').fadeIn(5000);
+				});
+	   	//fading in and out update password success message
+	   	$(function(){
+	   		$('#wed').hide();
+  			$('#wed').fadeIn('slow');
+  			$('#wed').fadeOut('slow');
+				});
+	   	//fading in and out of welcome message(s)
+			$(function(){   
+  			$('#tue').hide();
+  			$('#tue').fadeIn(3000);
+  			$('#tue').fadeOut(3000);
+  			$('#tue').fadeIn(3000);
+			});
+			$(document).ready(function(){
+    		$('#myModal').on('show.bs.modal', function (e) {
+      	  // var store = $.trim($("#student_reg_no").val());
+        var rowid = $.trim($("#stud_reg_no").val());
+      	  $.ajax({
+      	    type : 'post',
+      	    url : 'ajax/fetch_update1.php', //Here you will fetch records 
+      	    data :  'stud_reg_no='+ rowid, //Pass $id
+      	    success : function(data){
+      	    $('.fetched-data').html(data);//Show fetched data from database
+      	    }
+      	  });
+     		});
+     	});
+    </script>
+    <?php
+    if (strcmp($pwd,$com) == 0 ){
+
+		              
+		                	
+		                
+		?>
+		<script>
+
+    	$(document).ready(function(){
+	      $("#myModal").modal('show');
+
+		  	//  document.getElementsById('close').onclick = function(){
+  			// 	$('#mon').fadeIn('slow');
+					// };
+			});
+	  </script>
+	  <?php
+	  }
+	  ?>
 
 
 

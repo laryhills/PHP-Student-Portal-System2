@@ -12,3 +12,5 @@ $DateTime1=strftime("%d-%B-%Y",$CurrentTime);
 
 
 ?>
+
+<script src="valid.js"></script>

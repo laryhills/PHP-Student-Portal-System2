@@ -377,11 +377,11 @@ glyphicon-log-out"></span> Logout</a></li>
     $('#myModal').on('show.bs.modal', function (e) {
         var rowid = $(e.relatedTarget).data('userid');
         $.ajax({
-            type : 'post',
+            type : 'post', //Use post to send data
             url : 'fetch_record.php', //Here you will fetch records 
             data :  'rowid='+ rowid, //Pass $id
             success : function(data){
-            $('.fetched-data').html(data);//Show fetched data from database
+            $('.fetched-data').html(data);//Show fetched data from database to div class fetched-data
             }
         });
      });

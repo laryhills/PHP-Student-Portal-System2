@@ -63,6 +63,56 @@ body {
   margin-top:-25px;
 }
 
+/*--------------------------------------------------------------------------
+  Form Validation Style
+--------------------------------------------------------------------------*/
+.error{
+          color: red;
+        }
+        .border-red{
+          border-color: red;
+        }
+        .border-green{
+          border-color: green;
+        }
+        body{
+          overflow-y: hidden;
+        }
+        .fa-spinner{
+          font-size: 14px;
+          color: black;
+        }
+        .progress{
+          width: 66%;
+          height: 4px;
+          position:relative;
+          background: #7047d7;
+        }
+        .progress::before{
+          position: absolute;
+          content: "";
+          width: 0%;
+          height: 4px;
+          top: 0;
+          left:0;
+          background: orange;
+          animation: wait 1s infinite;
+          -webkit-animation: wait 1s infinite;
+          -moz-animation: wait 1s infinite;
+        }
+        @keyframes wait{
+          10%{width:10%}
+          20%{width:20%}
+          50%{width:50%}
+          70%{width:70%}
+          100%{width:100%}
+        }
+.login-error{
+  color: red;
+display: none; 
+width: 66%; 
+font-size: 1.5em;
+}
 
 /*--------------------------------------------------------------------------
   Footer Style

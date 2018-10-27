@@ -1,13 +1,11 @@
 <?php 
-session_start(); 
+// session_start(); 
 require_once('db_connect.php');
 require_once('functions/functions.php');
 ?>
 
 
 <!DOCTYPE>
-
-
 <html>
 	<head>
 		<meta charset = "utf-8">
@@ -26,6 +24,7 @@ require_once('functions/functions.php');
     		body {
     			background-color: white;
     		}
+    		
     	</style>
 
 	</head>
@@ -56,17 +55,6 @@ require_once('functions/functions.php');
 						<li ><a href="#">About Us</a></li>
 						<li><a href="#">Contact Us</a></li>
 					</ul>
-					<!-- <form action="dashboard.php" class="navbar-form navbar-right">
-						<div class="form-group">
-							<input class="form-control" type="text" name="search" placeholder="Search">
-						</div>
-						<button class="btn btn-default">
-        <i class="fa fa-search"></i></button>
-					</form> -->
-					 <!-- <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-      </ul> -->
 				</div>
 				
 			</div>
@@ -80,7 +68,7 @@ require_once('functions/functions.php');
 				
 				<div class="col-sm-offset-4 col-sm-4">
 					<br><br>
-					<h1>&nbsp;Login</h1>
+					<h1>Login</h1>
 					
 						<div>
 							<!-- notification message -->
@@ -92,103 +80,46 @@ require_once('functions/functions.php');
 									?>
 
 							
-							<form method="post" action="index.php">
+							<!-- <form method="" action=""> -->
+
+							<form class="loginStudent" id="loginStudent">
 								<fieldset>
+									<div class="login-error" id="eMsg" ></div>
+									<div class="form-group col-sm-6 show-progress"></div>
 									<div class="form-row">
-										<div class="form-group col-sm-8">	
+										<div class="form-group col-sm-8" style="padding: 0;">	
 											<label class="FieldInfo" for="student_reg_no">Student Registration Number:</label>
-							<input style="text-transform: uppercase;" class="form-control" type="text" name="student_reg_no" id="student_reg_no" placeholder="Student Reg. No." required>
+							<input style="text-transform: uppercase;" class="form-control" type="text" name="student_reg_no" id="student_reg_no" placeholder="Student Reg. No.">
+										<div class="name-error error" ></div>
 										</div>
 									</div>
 									<div class="form-row">
-										<div class="form-group col-sm-8">
+										<div class="form-group col-sm-8" style="padding: 0;">	
 											<label class="FieldInfo" for="student_password">Password:</label>
-											<input type="password" class="form-control" name="student_password" id="student_password" placeholder="Password" required>	
+							<input type="password" class="form-control" name="student_password" id="student_password" placeholder="Password" >
+										<div class="pwd-error error" ></div>
 										</div>
 									</div>
+									</div>
 									<div class="form-row">
-										<div class="form-group col-md-10">
+										<div class="form-group col-md-10" style="padding: 0;">
 											<input class="btn btn-success" type="submit" name="loginStudentBtn" value="Login">
 					
 										</div>
-	
 									</div>
-									
-
 								</fieldset>
 							</form>
 
-<?php 
-
-if (isset($_POST['student_reg_no']) and isset($_POST['student_password'])){
-	
-	// Assigning POST values to variables.
-	$stud_reg_no = $_POST['student_reg_no'];
-	$stud_pass = $_POST['student_password'];
-
-	
-	//Created template with placeholder
-	$query = "SELECT * FROM `students` WHERE student_reg_no=? and password=?";
-
-	//Create a prepared statement
-	$stmt = mysqli_stmt_init($db_connect);
-
-	//Prepare the prepared statement
-	if(!mysqli_stmt_prepare($stmt, $query)) {
-
-		echo "SQL statement failed";//internal viewing error
-	}
-	else{
-
-		//Bind parameters to the placeholder
-		mysqli_stmt_bind_param($stmt, "ss", $stud_reg_no, $stud_pass);
-		//Run parameters inside database
-		mysqli_stmt_execute($stmt);
-		$result = mysqli_stmt_get_result($stmt);
-		$count = mysqli_num_rows($result);
-		
-
-	
-	}
-		// user found
-		if ($count == 1){
-			
-			// check if user is admin or student
-			$logged_in_user = mysqli_fetch_assoc($result);
-
-				if ($logged_in_user['user_type'] == 'admin') {
-
-					// user is admin
-					$_SESSION['username'] = $stud_reg_no;
-
-					$_SESSION['timestamp']=time();
-
-					echo "<script type='text/javascript'>";
-					echo "alert('Login Credentials verified');";
-					echo "window.location='admin/dashboard.php';";
-					echo "</script>";
-
-				}else{
-
-					// user is student
-					$_SESSION['username'] = $stud_reg_no;
-
-					$_SESSION['timestamp']=time();
-
-					echo "<script type='text/javascript'>";
-					echo "alert('Login Credentials verified');";
-					echo "window.location='studpage.php';";
-					echo "</script>";
-
-				}
-			
-		}else{
-			 echo "<script type='text/javascript'>alert('Invalid Login Credentials');";
-			 echo "window.location='index.php';";
-			 echo "</script>";
-		}
-}
-?>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p><br>
 
 						</div>
 						
@@ -198,13 +129,7 @@ if (isset($_POST['student_reg_no']) and isset($_POST['student_password'])){
 						<p>&nbsp;</p>
 						<p>&nbsp;</p>
 						<p>&nbsp;</p> -->
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
+					
 				</div> <!-- Ending of Main Area -->
 
 				<div class="container"><!--  For Modal -->
@@ -262,7 +187,7 @@ if (isset($_POST['student_reg_no']) and isset($_POST['student_password'])){
 		    	</div>
 		    </div>
 	    </div> <!-- Ending of Footer -->
-
+		<script src="js/login.js"></script>
 	</body>
 	<!--Bootstrap 4 changes-->
 	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
