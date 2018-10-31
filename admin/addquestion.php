@@ -16,11 +16,58 @@ if(!$_SESSION['username']){
 
 $admin_loginid=$_SESSION['username'];
 
-		$stud_reg_no=$_SESSION['username'];
         $ViewQuery = "SELECT * FROM admin WHERE `admin_loginid` = '$admin_loginid'";
         $ViewQueryResult= mysqli_query($db_connect, $ViewQuery) or die(mysqli_error($db_connect));
         $count = mysqli_num_rows($ViewQueryResult);
-       
+        while ($row1=mysqli_fetch_array($ViewQueryResult)) {
+
+		                    $admin_name = ($row1['Name']);
+		                    $admin_status = ($row1['status']);
+        }
+
+        
+
+?>
+
+<?php
+
+if (isset($_POST['addQuestionBtn'])) {
+
+	$test_id=mysqli_real_escape_string($db_connect, ($_POST['test_id']));
+
+	$ViewQuery2 = "SELECT test_name,course_fk,course_title FROM `tests`,courses WHERE course_fk=course_code && test_id='$test_id'";
+		$ViewQueryResult2= mysqli_query($db_connect, $ViewQuery2) or die(mysqli_error($db_connect));
+		$count = mysqli_num_rows($ViewQueryResult);
+		while ($row1=mysqli_fetch_array($ViewQueryResult)) {
+
+		      $test_msg = $row['test_name']." -- ".$row['course_title']." (".$row['course_fk'].")";
+        }
+
+
+
+	$test_que=mysqli_real_escape_string($db_connect, ucfirst($_POST['test_que']));
+	$que_ans1=mysqli_real_escape_string($db_connect, ucfirst($_POST['que_ans1']));
+	$que_ans2=mysqli_real_escape_string($db_connect, ucfirst($_POST['que_ans2']));
+	$que_ans3=mysqli_real_escape_string($db_connect, ucfirst($_POST['que_ans3']));
+	$que_ans4=mysqli_real_escape_string($db_connect, ucfirst($_POST['que_ans4']));
+	$que_ans0=mysqli_real_escape_string($db_connect, ($_POST['que_ans0']));
+	
+			
+	
+
+	$sql = "INSERT INTO questions (test_fk,que_desc,ans1,ans2,ans3,ans4,true_ans,addedBy) VALUES ('$test_id','$test_que','$que_ans1','$que_ans2','$que_ans3','$que_ans4','$que_ans0','$admin_name')";
+            $result = mysqli_query($db_connect, $sql) or die(mysqli_error($db_connect));
+
+        $_SESSION["SuccessMessage"]="Question Added to ".$test_msg." Successful!!!";
+        header('location:addquestion.php');
+        exit;
+		
+	
+
+
+
+}
+
 ?>
 
 <!DOCTYPE>
@@ -33,7 +80,7 @@ $admin_loginid=$_SESSION['username'];
 		 <meta name = "viewport" content="width=device-width, initial-scale=1">
 	<!-- Bootstrap 4 Changes -->
 <!--     	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">-->
-		<title>Manage Students</title>
+		<title>Add Questions</title>
 		<link rel="stylesheet" href="../css/bootstrap.min.css">
 		<script src="../js/jquery-3.3.1.min.js"></script>
 		<script src="../js/bootstrap.min.js"></script>
@@ -96,6 +143,7 @@ $admin_loginid=$_SESSION['username'];
 					<ul id="side_menu" class="nav nav-pills nav-stacked">
 						<li><a href="dashboard.php"><span class="glyphicon glyphicon-home"> </span> Dashboard</a></li>
 						<li><a href="courses.php"><span class="glyphicon glyphicon-book"> </span> Courses</a></li>
+						<!-- <li><a href="#"><span class="glyphicon glyphicon-print"> </span> Print Result</a></li> -->
 						<li >
             <a href="#studentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="fa fa-user"></span> Students &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-caret-down"></i></a>
 				<ul  class="collapse nav nav-pills nav-stacked" id="studentSubmenu">
@@ -109,11 +157,11 @@ $admin_loginid=$_SESSION['username'];
             </li>
 			<li>
             <a href="#tmaSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> TMA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-caret-down"></i></a>
-				<ul  class="collapse nav nav-pills nav-stacked" id="tmaSubmenu">
+				<ul  class="nav nav-pills nav-stacked" id="tmaSubmenu">
                     <li>
                         <a href="addtest.php"><span class="fa fa-plus"></span> Add Tests</a>
                     </li>
-                    <li>
+                    <li   class="active">
                         <a href="addquestion.php"><span class="fa fa-plus"></span> Add Q & A</a>
                     </li>
                 </ul>
@@ -153,7 +201,7 @@ glyphicon-log-out"></span> Logout</a></li>
 					</ul>
 				</div> <!-- Ending of Side Area -->
 				<div class="col-sm-10">
-					<h1>Manage Admin</h1>
+					<h1>Admin Add Questions</h1>
 					
 						<div>
 							<!-- notification message -->
@@ -164,143 +212,106 @@ glyphicon-log-out"></span> Logout</a></li>
 									echo SuccessMessage();
 									?>
 
-							
-							
-						</div>
-						<div class="table-responsive">
-
+						<form method="post" action="addquestion.php">
+								<fieldset>
+									
+									<div class="form-row">
+										<div class="form-group col-sm-8">
+										<label class="FieldInfo" for="test_id">Test</label>
+										<select class="form-control" name="test_id" id="test_id" required>				  
 	<?php 
 
-        $ViewQuery = "SELECT * FROM admin WHERE admin_type='admin'";
-        $ViewQueryResult= mysqli_query($db_connect, $ViewQuery) or die(mysqli_error($db_connect));
-        $serial=0;
-    ?>
-                	
+		 $option = "SELECT test_id,test_name,course_fk,course_title FROM `tests`,courses WHERE course_fk=course_code";
+			        $optionresult= mysqli_query($db_connect, $option) or die(mysqli_error($db_connect));
+			            while ($row=mysqli_fetch_array($optionresult)) {
+	?>
+				       		<option value="<?php echo $row['test_id']; ?>">
+				        	<?php echo $row['test_name']." -- ".$row['course_title']." (".$row['course_fk'].")";?></option>
+				            
+	<?php
+			           }
+	?>
+
+
+  											</select>
+
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-sm-9">
+											<label class="FieldInfo" for="test_que">Question:</label>
+											<textarea  class="form-control" id="test_que" name="test_que" rows="3"placeholder="Question" required></textarea>
+										</div>	
+									</div>
+									<div class="form-row">
+										<div class="form-group col-sm-9">	
+											<label class="FieldInfo" for="que_ans1">Anwser 1:</label>
+							<input  class="form-control" type="text" name="que_ans1" id="que_ans1" placeholder="Anwser 1" required>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-sm-9">	
+											<label class="FieldInfo" for="que_ans2">Anwser 2:</label>
+							<input  class="form-control" type="text" name="que_ans2" id="que_ans2" placeholder="Anwser 2" required>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-sm-9">	
+											<label class="FieldInfo" for="que_ans3">Anwser 3:</label>
+							<input  class="form-control" type="text" name="que_ans3" id="que_ans" placeholder="Answer 3" required>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-sm-9">	
+											<label class="FieldInfo" for="que_ans4">Anwser 4:</label>
+							<input  class="form-control" type="text" name="que_ans4" id="que_ans4" placeholder="Anwser 4" required>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-sm-9">	
+											<label class="FieldInfo" for="que_ans0">Anwser 4:</label>
+							<input  class="form-control" type="number" name="que_ans0" id="que_ans0" placeholder="Correct Answer" required>
+							<small id="passwordHelpBlock" class="form-text text-muted">
+  								Correct Answer show be an integer (Answer 1 = 1, Answer 2 = 2, Anwser 3 = 3 & Answer 4 = 4)
+							</small>
+										</div>
+									</div>
+									<div class="form-row">
+										<div class="form-group col-md-9">
+											<input class="btn btn-success btn-block" type="submit" name="addQuestionBtn" value="Add Question">
+					
+										</div>
+	
+									</div>
+									
+
+								</fieldset>
+							</form>
+
+
+
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+						<p>&nbsp;</p>
+
 							
-			<table class="table table-hover">
-				<thead>
-                	<tr>
-                        <th>S/No</th>
-                        <th>Admin Login ID</th>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th colspan="2">Action</th>
-                        <!-- <th>Action</th> -->
-                    </tr>
-                </thead>
-                <tbody>
-                  
-                  	<?php
-            
-		                while ($row=mysqli_fetch_array($ViewQueryResult)) {
-
-		                    $admin_name = ($row['Name']);
-		                   	$admin_loginids = ($row['admin_loginid']);
-		                    $admin_status= $row['status'];
-
-		                    $serial++;
-		                    
-                  	?>
-              	<tr>
-                    <td><?php echo $serial; ?></td>
-                    <td><?php echo $admin_loginids; ?></td>
-                    <td><?php echo $admin_name; ?></td>
-                    <td><?php echo $admin_status; ?></td>
-                    
-                  	<td> 
-                  	<?php
-                  		if ($admin_status === 'allowed'){
-                  	?>
-                  		<a href="del_admin.php?disable=<?php echo $row['admin_id']; ?>" class="disable_btn">
-                  		<button type="button" class="btn btn-primary">Disable</button></a>
-                  	<?php
-             			}elseif ($admin_status === 'disallowed') {	
-             		?>
-             			<a href="del_admin.php?enable=<?php echo $row['admin_id']; ?>" class="enable_btn"><button type="button" class="btn btn-primary">Enable</button></a>
-             		<?php
-                	  	}
-                  	?>	
-                  	
-
-                </td>
-                  <td> 
-                  <a href="del_admin.php?del=<?php echo $row['admin_id']; ?>" class="del_btn"><button type="button" class="btn btn-danger">Delete</button></a>
-
-                </td>
-                
-	               
-             	</tr>
-             <?php
-
-            	 }
-
-             ?>
-            	</tbody>
-         
-            </table>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
-						<p>&nbsp;</p>
+							
 						</div>
+						
 
 
 						
-						
+
 				</div> <!-- Ending of Main Area -->
 
-				<div class="container"><!--  For Modal -->
-  
-  
-
-  <!-- The Modal -->
-  <div class="modal fade bd-example-modal-lg" id="myModal" style="color: black;">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-      
-        <!-- Modal Header -->
-        <div class="modal-header"  style="color: black;">
-          <!-- <h4 class="modal-title" style="color: black;">Modal Heading</h4> -->
-          <h2 style="font-size: 25px;"><u>Update Course</u></h2><br> 
-          <!--<button type="button" class="close" data-dismiss="modal">&times;</button> -->
-        </div>
-        
-        <!-- Modal body -->
-        <div class="modal-body">
-	      	
-
- 			<div class="fetched-data"> <!-- show data to modal -->
- 				
- 			</div>
-
-        <!-- Modal footer -->
-        <div class="modal-footer">
-        	<!-- <button type="submit" class="btn btn-primary" id="btnEdit"><span class="fa fa-edit"></span> Update</button> -->
-        	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-        </div>
-        
-      </div>
-    </div>
-  </div>
-  
-</div>
-
 				
-
-
-			</div> <!-- Ending of Modal -->
-
 		</div> <!-- Ending of Container-Row -->
 		</div> <!-- Ending of Container-Fluid -->
 		<div class="footer">
@@ -318,34 +329,7 @@ glyphicon-log-out"></span> Logout</a></li>
 
 
 
-	    <script type="text/javascript">
-
-
-
-		$(document).ready(function(){
-    $('#myModal').on('show.bs.modal', function (e) {
-        var rowid = $(e.relatedTarget).data('userid');
-        $.ajax({
-            type : 'post',
-            url : 'fetch_record_admin.php', //Here you will fetch records 
-            data :  'rowid='+ rowid, //Pass $id
-            success : function(data){
-            $('.fetched-data').html(data);//Show fetched data from database
-            }
-        });
-     });
-});
-
-		$(document).ready(function(){
-	    $("#myBtn").click(function(){
-	        $("#myModal").modal();
-		    });
-		});
-
-		
-
-
-		</script>
+	   <script src="../js/addstudent.js"></script>
 	</body>
 	<!--Bootstrap 4 changes-->
 	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

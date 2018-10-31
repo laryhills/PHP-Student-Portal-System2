@@ -1,6 +1,9 @@
 <?php
 session_start();
-require_once('../db_connect.php');
+//Set config ext file
+define('__CONFIG__', true);
+//Require ext file(s)
+require_once('../conn/db_connect.php');
 
 if (isset($_GET['del'])) {
 	$id = $_GET['del'];

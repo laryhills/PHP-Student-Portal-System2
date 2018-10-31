@@ -1,6 +1,12 @@
-
-
 <?php
+
+
+//Test for __CONFIG__ constant
+// if(!defined('__CONFIG__')){
+// 	exit('Page/File rquested not found');
+// }
+
+
 
 	$dbServername = "localhost";
 	$dbUsername = "root";

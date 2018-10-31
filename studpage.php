@@ -1,6 +1,9 @@
 <?php 
 session_start();
-require_once('db_connect.php');
+//Set config ext file
+define('__CONFIG__', true);
+//Require ext file(s)
+require_once('conn/db_connect.php');
 require_once('functions/functions.php');
 	
 
@@ -76,9 +79,9 @@ if(!$_SESSION['username']){
 					<ul id="side_menu" class="nav nav-pills nav-stacked">
 						<li class="active"><a href="studpage.php"><span class="glyphicon glyphicon-home"> </span> Dashboard</a></li>
 						<li><a href="studcourses.php"><span class="glyphicon glyphicon-book"> </span> My Courses</a></li>
-						<li>
+						<!-- <li>
                         <a href="studtest.php"><span class="fa fa-edit"></span> Take Tests</a>
-                    	</li>
+                    	</li> -->
 						<li>
                         <a href="studupdate.php"><span class="fa fa-edit"></span> Edit Profile</a>
                     	</li>

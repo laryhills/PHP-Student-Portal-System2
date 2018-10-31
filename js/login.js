@@ -9,7 +9,7 @@
 $(document).ready(function(){
 	var stud_reg_no="";
 	var stud_password="";
-	var stud_reg_no_regex=/^[A-Z]{6}((18[\d]{3})|[ADMINadmin]{5})?$/;
+	var stud_reg_no_regex=/^[A-Z]{4}(([A-Z]{2}18[\d]{3})|[ADMINadmin]{5}0[0-9]{1})?$/;
 	var stud_password_regex =/^[a-zA-Z0-9]{8,}$/;
 
 	//===Student Reg No Validation===
@@ -49,7 +49,7 @@ $(document).ready(function(){
                 $("#student_reg_no").removeClass("border-green");
                 stud_reg_no="";
               }
-            },2000); 
+            },1000); 
           }
         })
     }else{
@@ -74,20 +74,26 @@ $("#student_reg_no")
 		if (store_pwd.length == "") {
       errors.push("Password is Required !!!");
 
-			// $(".pwd-error").html("Password is Required !!!");
-			// $("#student_password").addClass("border-red");
-			// $("#student_password").removeClass("border-green");
-			// stud_password="";
     }
-    if (stud_reg_no_regex.test(store_pwd)) {
+     if (store_pwd.length < 8) {
+      errors.push("Password is Too Short !!!");
+    }
+    
+    //===issues with regex==
+    // else if (stud_password_regex.test(store_pwd)) {
+    //   errors.push("Password is Invalid !!!");
+    // }
+    if (store_pwd.search(/[a-z0-9$,&?!^%/@#*()-]/) < 0) {
       errors.push("Password is Invalid !!!");
     }
+   
     // if (store_pwd.search(/(?=.*[0-9])/) < 0) {
     //   errors.push("Password must contain at least one digit !!!");
     // }
-    // if (store_pwd.search(/(?=.*[A-Z])/) < 0) {
-    //   errors.push("Password must contain at least one uppercase !!!");
-    // }
+    if (store_pwd.search(/(?=.*[A-Z])/) < 0) {
+      errors.push("Password must contain at least one uppercase !!!");
+
+     }
     // if (store_pwd.search(/(?=.*[$,&?!^%/@#*])/) < 0) {
     //   errors.push("Password must contain at least one special character !!!");
     // }
@@ -97,15 +103,20 @@ $("#student_reg_no")
       $("#student_password").addClass("border-red");
       $("#student_password").removeClass("border-green");
       stud_password="";
-    }else{
+
+      $(".pwd-error").html(errors[0]);
+      console.log(errors[0]);
+    }
+    else if (errors.length = 0){
       $("#student_password").addClass("border-green");
       $("#student_password").removeClass("border-red");
+      $(".pwd-error").hide();
       // $(".pwd-error").html('<div class="text-success"><i class="fa fa-check-circle"></i> Your Password is Strong !!!</div');   
      stud_password=store_pwd;
     }
   }
   $("#student_password")
-    .keyup(PasswordValidation)
+    // .keyup(PasswordValidation)
     .keypress(PasswordValidation)
     .focusout(PasswordValidation)
     //===End of Password Validation===
@@ -126,12 +137,13 @@ $("#student_reg_no")
          $("#student_password").removeClass("border-green");
       }
       //In the case User uses auto-fill password
-      if (stud_password.length != test_pwd.length && stud_reg_no.length =="") {
-         $(".pwd-error").html("Please Re-Type Password !!!");
-         $("#student_password").addClass("border-red");
-         $("#student_password").removeClass("border-green");
-         $("#student_password").val("");
-      }else{
+     // else if (stud_password.length != test_pwd.length && (stud_reg_no.length ==""|| stud_password.length=="")) {
+     //     $(".pwd-error").html("Please Re-Type Password !!!");
+     //     $("#student_password").addClass("border-red");
+     //     $("#student_password").removeClass("border-green");
+     //     $("#student_password").val(" ");
+     //  }
+     else{
         stud_password = test_pwd;
       }
       if (stud_reg_no.length != "" && stud_password.length != "") {
@@ -151,7 +163,7 @@ $("#student_reg_no")
               if (result['outcome'] == 'success') {
                 location = result.redirect;
             }else if (result['outcome'] == 'failed') {
-              $("#eMsg").html('<i class="fa fa-times"></i> Student Not Registered!!!').show();
+              $("#eMsg").html('<i class="fa fa-times"></i> Student Not Registered/ Incorrect Password!!!').show();
               $(".show-progress").removeClass("progress")
             }
 

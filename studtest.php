@@ -1,59 +1,43 @@
-<!-- <?php 
+<?php 
 session_start();
-require_once('db_connect.php');
+//Set config ext file
+$_SESSION['TEST']="test";
+//Require ext file(s)
+require_once('conn/db_connect.php');
 require_once('functions/functions.php');
+
+if(!$_SESSION['username']){
+	$_SESSION["LoginErrorMessage"]="Access Denied, Login Required!!!";
+	header('location:index.php');
+	exit;
+}
 ?>
 
 <?php
 
-if (isset($_POST['addCourseBtn'])) {
+$stud_reg_no=$_SESSION['username'];
+if (isset($_GET['test_course'])) {
+	$id = $_GET['test_course'];
+	$ViewQuery=mysqli_query($db_connect, "SELECT * FROM courses WHERE course_code='$id'") or die(mysqli_error());
+	while ($row=mysqli_fetch_array($ViewQuery)) {
+		                    $course_code1 = ($row['course_code']);
+		                   	$course_title1 = ($row['course_title']);
+    }
 
-	$course_title=mysqli_real_escape_string($db_connect, ucwords($_POST['course_title']));
-	$course_code=mysqli_real_escape_string($db_connect, $_POST['course_code']); 
-	$course_credit=mysqli_real_escape_string($db_connect, $_POST['course_credit']); 
-	$course_dept=mysqli_real_escape_string($db_connect, $_POST['course_dept']); 
-
+ 	$ViewTest=mysqli_query($db_connect, "SELECT * FROM tests WHERE course_fk='$id'") or die(mysqli_error());
+ 	
 	
-	// if(empty($course_name) || empty($course_code)){
+	// $_SESSION["SuccessMessage"]="Course Removed Successful!!!";
+	// header('location:studcourses.php');
+	// exit;
 
-	// 	$_SESSION["ErrorMessage"]="All fields must be field";
- 	//        header('location:addcourses.php');
- 	//        exit;
-	// }
-	
-	if (strlen($course_code) <> 6) {
+}else{
 
-		$_SESSION["ErrorMessage"]="Course Code Must be Six Characters";
-        header('location:courses.php');
-        exit;
-
-	}elseif(!(preg_match("/^[A-Z]{3}[0-9]{3}$/",$course_code))) {
-
-			$_SESSION["ErrorMessage"]="Course Code Wrong";
-        	header('location:courses.php');
-        	exit;
-	
-	}elseif ($course_credit < 2 || $course_credit > 6) {
-
-		$_SESSION["ErrorMessage"]="Course Credit Is Invalid";
-        header('location:courses.php');
-        exit;
-	}else{
-
-			$sql = "INSERT INTO courses (course_title,course_code,course_dept_fk,course_credit) VALUES ('$course_title','$course_code','$course_dept','$course_credit')";
-                $result = mysqli_query($db_connect, $sql) or die(mysqli_error($db_connect));
-
-            $_SESSION["SuccessMessage"]="Course Added!!!";
-            header('location:courses.php');
-            exit;
-		}
-	
-
-
-
+	die("Page/File requested not available: ".mysqli_error($db_connect));
 }
 
-?> -->
+
+?>
 
 <!DOCTYPE>
 
@@ -155,8 +139,36 @@ glyphicon-log-out"></span> Logout</a></li>
 									?> -->
 
 							<div class="col-sm-12">
-								<br><br><br><br><br><br>
-								<h1 style="font-size: 8.9em">COMING SOON</h1>
+								<br><br><br>
+								<!-- <h1 style="font-size: 8.9em">COMING SOON</h1> -->
+								<div style="text-align: center; font-size: 36px;">
+									<?php echo $course_code1."  ".$course_title1; ?>
+									<br>
+								<?php
+								if (mysqli_num_rows($ViewTest) < 1) {
+ 									echo "<h2>No Test for this Course Yet </h2>";
+							 		}
+							 	else{
+							 							
+							 		echo "<h3>Choose TMA </h3>";
+
+							 	while ($row1=mysqli_fetch_array($ViewTest)) {
+							 			
+
+							 	?>
+		                    		<a href="test.php?test_id=<?php echo $row1[0]?>&tma_no=<?php echo $row1[2]?>" style="font-size: 20px;"><?php echo "Take ".$row1[3];?></a><br>
+		                    	
+
+		                    	<?php	
+								}
+							 	}							
+							 	?>
+
+
+									
+								</div>
+								
+								<p>&nbsp;</p>
 								<p>&nbsp;</p>
 								<p>&nbsp;</p>
 								<p>&nbsp;</p>

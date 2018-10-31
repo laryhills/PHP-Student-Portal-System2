@@ -1,7 +1,18 @@
 <?php 
 session_start();
-require_once('db_connect.php');
+//Set config ext file
+define('__CONFIG__', true);
+//Require ext file(s)
+require_once('conn/db_connect.php');
 require_once('functions/functions.php');
+
+
+if(!$_SESSION['username']){
+	$_SESSION["LoginErrorMessage"]="Access Denied, Login Required!!!";
+	header('location:index.php');
+	exit;
+}
+
 ?>
 
 <?php
@@ -108,9 +119,9 @@ if (isset($_POST['addCourseBtn'])) {
 					<ul id="side_menu" class="nav nav-pills nav-stacked">
 						<li><a href="studpage.php"><span class="glyphicon glyphicon-home"> </span> Dashboard</a></li>
 						<li  class="active"><a href="studcourses.php"><span class="glyphicon glyphicon-book"> </span> My Courses</a></li>
-						<li>
+						<!-- <li>
                         <a href="studtest.php"><span class="fa fa-edit"></span> Take Tests</a>
-                    	</li>
+                    	</li> -->
 						<li>
                         <a href="studupdate.php"><span class="fa fa-edit"></span> Edit Profile</a>
                     	</li>
@@ -121,7 +132,7 @@ glyphicon-log-out"></span> Logout</a></li>
 					</ul>
 				</div> <!-- Ending of Side Area -->
 				<div class="col-sm-10">
-					<h2>&nbsp;Update Profile</h2>
+					<h2>&nbsp;My Courses</h2>
 						<div>
 							
 							<!-- notification message -->
@@ -193,7 +204,7 @@ glyphicon-log-out"></span> Logout</a></li>
                         <th>Dept.</th>
                         <th>Faculty</th>
                         <th>Credits</th>
-                        <th>Action</th>
+                        <th colspan="2">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -217,6 +228,10 @@ glyphicon-log-out"></span> Logout</a></li>
                     <td><?php echo $course_dept1; ?></td>
                     <td><?php echo $course_fac1; ?></td>
                     <td><?php echo $course_credit1; ?></td>
+                    <td>
+                  <a href="studtest.php?test_course=<?php echo $row['course_fk']; ?>" class="take_tma_btn" ><button type="button" class="btn btn-primary">Take TMA</button></a>
+
+                </td>
                   <td>
                   <a href="stud_del_course.php?del=<?php echo $row['course_fk']; ?>" class="del_btn" onclick="return confirm('Are you sure you want to remove this course?');" ><button type="button" class="btn btn-danger">Delete</button></a>
 

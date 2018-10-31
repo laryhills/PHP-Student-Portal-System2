@@ -1,8 +1,26 @@
 <?php 
 session_start();
-require_once('../db_connect.php');
+//Set config ext file
+define('__CONFIG__', true);
+//Require ext file(s)
+require_once('../conn/db_connect.php');
 require_once('../functions/functions.php');
-require_once('../dateTime.php');
+
+if(!$_SESSION['username']){
+	$_SESSION["LoginErrorMessage"]="Access Denied, Login Required!!!";
+	header('location:../admin.php');
+	exit;
+}
+?>
+<?php
+
+$admin_loginid=$_SESSION['username'];
+
+		$stud_reg_no=$_SESSION['username'];
+        $ViewQuery = "SELECT * FROM admin WHERE `admin_loginid` = '$admin_loginid'";
+        $ViewQueryResult= mysqli_query($db_connect, $ViewQuery) or die(mysqli_error($db_connect));
+        $count = mysqli_num_rows($ViewQueryResult);
+       
 ?>
 <!DOCTYPE>
 
@@ -80,7 +98,7 @@ require_once('../dateTime.php');
 						<li><a href="courses.php"><span class="glyphicon glyphicon-book"> </span> Courses</a></li>
 						<!-- <li><a href="#"><span class="glyphicon glyphicon-print"> </span> Print Result</a></li> -->
 						<li>
-            <a href="#studentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="fa fa-user"></span> Students &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-caret-down"></i></a>
+            <a href="#studentSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="fa fa-user"></span> Students &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-caret-down"></i></a>
 				<ul  class="collapse nav nav-pills nav-stacked" id="studentSubmenu">
                     <li>
                         <a href="addstudent.php"><span class="fa fa-user-plus"></span> Add Student</a>
@@ -90,8 +108,29 @@ require_once('../dateTime.php');
                     </li>
                 </ul>
             </li>
+            <li>
+            <a href="#tmaSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="glyphicon glyphicon-check" aria-hidden="true"></span> TMA&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-caret-down"></i></a>
+				<ul  class="collapse nav nav-pills nav-stacked" id="tmaSubmenu">
+                    <li>
+                        <a href="addtest.php"><span class="fa fa-plus"></span> Add Tests</a>
+                    </li>
+                    <li>
+                        <a href="addquestion.php"><span class="fa fa-plus"></span> Add Q & A</a>
+                    </li>
+                </ul>
+            </li>
 
-             <li>
+             <?php
+            if ($count == 1){
+				
+				// check if admin is allowed
+				$logged_in_user = mysqli_fetch_assoc($ViewQueryResult);
+
+					if ($logged_in_user['admin_type'] == 'master') {
+
+			?>
+					
+					<li>
             <a href="#adminSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><span class="fa fa-user"></span> Admins &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <i class="fa fa-caret-down"></i></a>
 				<ul  class="collapse nav nav-pills nav-stacked" id="adminSubmenu">
                     <li>
@@ -102,7 +141,15 @@ require_once('../dateTime.php');
                     </li>
                 </ul>
             </li>
-						<li><a href="../logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+						
+
+			<?php
+					}
+				}
+
+            ?>
+
+						<li><a href="logout.php"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
 						<!-- <li><a href="courses.php">Courses</a></li>
 						<li><a href="result.php">Check Result</a></li>
 						<li><a href="payment.php">Payment</a></li>

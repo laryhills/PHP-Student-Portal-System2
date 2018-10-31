@@ -72,11 +72,10 @@ require_once('functions/functions.php');
 				
 				<div class="col-sm-offset-4 col-sm-4">
 					<br><br>
-					<h1>Login</h1>
+					<h1>Admin Login</h1>
 					
 						<div>
 							<!-- notification message -->
-							
 								<?php
 									echo LoginErrorMessage();
 								?>
@@ -87,28 +86,28 @@ require_once('functions/functions.php');
 							
 							<!-- <form method="" action=""> -->
 
-							<form class="loginStudent" id="loginStudent">
+							<form class="loginAdmin" id="loginAdmin">
 								<fieldset>
 									<div class="login-error" id="eMsg" ></div>
 									<div class="form-group col-sm-6 show-progress"></div>
 									<div class="form-row">
 										<div class="form-group col-sm-8" style="padding: 0;">	
-											<label class="FieldInfo" for="student_reg_no">Student Registration Number:</label>
-							<input style="text-transform: uppercase;" class="form-control" type="text" name="student_reg_no" id="student_reg_no" placeholder="Student Reg. No.">
+											<label class="FieldInfo" for="admin_loginid">Login ID:</label>
+							<input style="text-transform: uppercase;" class="form-control" type="text" name="admin_loginid" id="admin_loginid" placeholder="Login ID">
 										<div class="name-error error" ></div>
 										</div>
 									</div>
 									<div class="form-row">
 										<div class="form-group col-sm-8" style="padding: 0;">	
-											<label class="FieldInfo" for="student_password">Password:</label>
-							<input type="password" class="form-control" name="student_password" id="student_password" placeholder="Password" >
+											<label class="FieldInfo" for="admin_password">Password:</label>
+							<input type="password" class="form-control" name="admin_password" id="admin_password" placeholder="Password" >
 										<div class="pwd-error error" ></div>
 										</div>
 									</div>
 									</div>
 									<div class="form-row">
 										<div class="form-group col-md-10" style="padding: 0;">
-											<input class="btn btn-success" type="submit" name="loginStudentBtn" value="Login">
+											<input class="btn btn-success" type="submit" name="loginAdminBtn" value="Login">
 					
 										</div>
 									</div>
@@ -141,7 +140,42 @@ require_once('functions/functions.php');
   
   
 
+  <!-- The Modal -->
+  <div class="modal fade bd-example-modal-lg" id="myModal" style="color: black;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header"  style="color: black;">
+          <!-- <h4 class="modal-title" style="color: black;">Modal Heading</h4> -->
+          <h2 style="font-size: 25px;"><u>Update Course</u></h2><br> 
+          <!--<button type="button" class="close" data-dismiss="modal">&times;</button> -->
+        </div>
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+	      	
+
+ 			<div class="fetched-data"> <!-- show data to modal -->
+ 				
+ 			</div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        	<!-- <button type="submit" class="btn btn-primary" id="btnEdit"><span class="fa fa-edit"></span> Update</button> -->
+        	<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        </div>
+        
+      </div>
+    </div>
+  </div>
   
+</div>
+
+				
+
+
+			</div> <!-- Ending of Modal -->
 
 		</div> <!-- Ending of Container-Row -->
 		</div> <!-- Ending of Container-Fluid -->
@@ -157,7 +191,7 @@ require_once('functions/functions.php');
 		    	</div>
 		    </div>
 	    </div> <!-- Ending of Footer -->
-		<script src="js/login.js"></script>
+		<script src="js/adminLogin.js"></script>
 	</body>
 	<!--Bootstrap 4 changes-->
 	<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

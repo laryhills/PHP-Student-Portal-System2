@@ -1,6 +1,10 @@
 <?php 
 session_start(); 
-include_once('../conn/db_connect.php');
+
+// //Set config ext file
+// define('__CONFIG__', true);
+// //Require ext file(s)
+require_once('../conn/db_connect.php');
 
 function login_submit(){
 	global $db_connect;
@@ -33,20 +37,11 @@ function login_submit(){
 			// user found
 			if ($count == 1){
 				
-				// check if user is admin or student
+				// check if user is allowed
 				$logged_in_user = mysqli_fetch_assoc($result);
 
-					if ($logged_in_user['user_type'] == 'admin') {
+					if ($logged_in_user['status'] == 'disallowed') {
 
-						// user is admin
-						$_SESSION['username'] = $stud_reg_no;
-
-						$_SESSION['timestamp']=time();
-
-						
-						echo "Welcome Admin";
-
-						echo json_encode(['outcome' => 'success', 'redirect' => 'studpage.php']);
 
 					}else{
 

@@ -1,5 +1,8 @@
 <?php
-require_once('../db_connect.php');
+//Set config ext file
+define('__CONFIG__', true);
+//Require ext file(s)
+require_once('../conn/db_connect.php');
 require_once('../functions/functions.php');
 
 ?>

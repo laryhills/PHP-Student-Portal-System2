@@ -1,6 +1,10 @@
 <?php 
 session_start(); 
-include_once('../conn/db_connect.php');
+
+//Set config ext file
+define('__CONFIG__', true);
+//Require ext file(s)
+require_once('../conn/db_connect.php');
 
 function update_submit(){
 	global $db_connect;
